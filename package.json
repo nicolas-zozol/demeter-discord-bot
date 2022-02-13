@@ -12,6 +12,7 @@
   },
   "scripts": {
     "start": "node src/bot.js",
+    "test": "jest",
     "bot": "node src/bot.js"
   },
   "type": "module",
@@ -34,6 +35,9 @@
     "dotenv": "^16.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.2",
+    "@babel/preset-env": "^7.16.11",
+    "babel-jest": "^27.5.1",
     "jest": "^27.4.3"
   }
 }
