@@ -1,9 +1,10 @@
-import {addEvent, getState, resetEvents} from "./state";
+import {addEvent, getState, resetEvents} from "./state.js";
 
 
+const dirname = './src/local-state'
 describe('Events are saved and processed, resulting into a memory state ', ()=>{
   beforeAll(()=>{
-    process.env.STATE_DATABASE = __dirname + "/events.tests.json"
+    process.env.STATE_DATABASE = dirname + "/events.tests.json"
   })
 
   afterAll(()=>{
@@ -17,7 +18,7 @@ describe('Events are saved and processed, resulting into a memory state ', ()=>{
 
   test('it is able to have an empty directory', async ()=>{
     const expectedState = {
-      started: false
+      available: false
     };
     const actual = await getState()
     expect(expectedState).toEqual(actual)
@@ -26,10 +27,10 @@ describe('Events are saved and processed, resulting into a memory state ', ()=>{
 
   test('it is able to start the app', async ()=>{
     const expectedState = {
-      started: true
+      available: true
     };
     await addEvent({
-      type:'APPLICATION_STARTED'
+      type:'APPLICATION_AVAILABLE'
     })
     const actual = await getState()
     expect(expectedState).toEqual(actual)

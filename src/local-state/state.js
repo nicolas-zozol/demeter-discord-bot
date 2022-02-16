@@ -1,13 +1,14 @@
 import {promises as fs} from 'fs';
-import {processEvent} from "./events-handler";
-import logger from "../service/core/winston";
+import {processEvent} from "./events-handler.js";
+import logger from "../service/core/winston/index.js";
 
-const databaseFile = ()=>process.env.STATE_DATABASE ||  __dirname + "/events.json"
+const dirname = './src/local-state'
+const databaseFile = ()=>process.env.STATE_DATABASE ||  dirname + "/events.json"
 
 
 let initiated = false;
 const state = {
-  started: false
+  available: false
 };
 const events = [];
 
@@ -81,3 +82,7 @@ export async function resetEvents() {
   await fs.writeFile(databaseFile(), JSON.stringify([], null, 2), "utf-8");
 }
 
+export const stateApi={
+  setAppAvailable :()=>addEvent({TYPE:'APPLICATION_AVAILABLE'}),
+  isAppAvailable : ()=>state.started
+}

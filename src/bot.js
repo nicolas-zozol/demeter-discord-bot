@@ -11,6 +11,7 @@ import {checkEndProposal} from './service/discord/proposal/index.js'
 import dotenv from 'dotenv'
 
 
+import {getState} from "./local-state/state.js";
 
 (async () => {
     dotenv.config()
@@ -36,7 +37,9 @@ import dotenv from 'dotenv'
     const noiseOriginal = await Jimp.read('./images/noise.png') // Noise image for captcha
 
     // Load last saved Database
-    await loadDb(clientWeb3, db, mutex)
+    if ( (await getState()).started){
+        await loadDb(clientWeb3, db, mutex)
+    }
 
     // Discord.js client
     const clientDiscord = await createClient(
