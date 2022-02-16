@@ -52,10 +52,12 @@ export const loadDb = async (clientWeb3, db, mutex) => {
             try {
                 for await (const upload of clientWeb3?.list()) {
                     if (!lastUpload)lastUpload = upload
-                    if(moment(upload?.created)?.isAfter(moment(lastUpload?.created)))lastUpload = upload
+                    if(moment(upload?.created)?.isAfter(moment(lastUpload?.created))){
+                        lastUpload = upload
+                    }
                 }
             }   catch (e) {
-                logger.debug('Fetch last directory failed.')
+                logger.debug('Fetch last directory failed.', e)
             }
             if(!lastUpload) throw Error('Fetch last directory failed.')
             logger.debug('Fetch last directory done.')
