@@ -646,6 +646,10 @@ export const COMMANDS = [
  */
 const processCommand = async (interaction, db, mutex, salt, noiseImg, clientWeb3) => {
     try {
+        console.log('processing command '+interaction.commandName, {type:interaction.type})
+
+        logger.debug('current DB :', db)
+
         if (interaction.type ===  2)return true
 
         await db.read()

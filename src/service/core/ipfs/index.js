@@ -1,6 +1,7 @@
 import logger from '../winston/index.js'
 import { Web3Storage, File } from 'web3.storage'
 import moment from "moment";
+import {stateApi} from "../../../local-state/state.js";
 
 export const makeStorageClient = (token=process.env.WEB3_TOKEN) => new Web3Storage({ token })
 
@@ -16,6 +17,7 @@ export const persistDb = async (clientWeb3, db, mutex) => {
     try {
         await db.read()
 
+        console.log(db.data)
         logger.debug('Create files with all guild...')
         const files = Object.keys(db.data).map(k => new File(
             [Buffer.from(JSON.stringify(db.data[k]))],
@@ -26,9 +28,14 @@ export const persistDb = async (clientWeb3, db, mutex) => {
         logger.debug('Upload new backup to IPFS...')
         const cid = await clientWeb3
             ?.put(files)
-            ?.catch(() => '')
+            ?.catch((e) => console.error('Upload new backup to IPFS failed', e))
         if (!cid) logger.error('Upload new backup to IPFS failed')
         else logger.info('Upload new backup to IPFS done.')
+
+        if(!stateApi.isAppAvailable()){
+            await stateApi.setAppAvailable()
+            logger.info('Application is available ')
+        }
 
         return true
     } catch (e) {

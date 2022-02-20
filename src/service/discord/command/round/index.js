@@ -13,6 +13,7 @@ import logger from '../../../core/winston/index.js'
  * @returns {Promise<boolean>}
  */
 export const startFirstRound = async (interaction, guildUuid, db, mutex) => {
+    logger.debug('first round command', interaction.options)
     try {
         if (!interaction?.options?.data
                 ?.find(d => d?.name === COMMANDS_NAME.ROUND.START_FIRST.name)) return false
